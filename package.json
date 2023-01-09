@@ -1,0 +1,40 @@
+{
+  "name": "react-dnd-keyboard-accessible-backend",
+  "version": "1.0.0",
+  "author": "toridyar",
+  "description": "An additional backend to make react-dnd accessible by supporting keyboard inputs.",
+  "license": "MIT",
+  "repository": "toridyar/react-dnd-keyboard-accessible-backend",
+  "homepage": "https://github.com/toridyar/react-dnd-keyboard-accessible-backend",
+  "keywords": [
+    "a11y",
+    "keyboard",
+    "react",
+    "react-dnd",
+    "dnd",
+    "sortable",
+    "drag-and-drop",
+    "drag-n-drop",
+    "drag-drop",
+    "drag",
+    "drop",
+    "typescript"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "peerDependencies": {
+    "react": "16.14.0",
+    "react-dnd": "16.0.1"
+  },
+  "devDependencies": {
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-scripts": "4.0.3",
+    "react-dnd": "16.0.1",
+    "react-dnd-html5-backend": "16.0.1",
+    "react-dnd-multi-backend": "8.0.0"
+  }
+}
