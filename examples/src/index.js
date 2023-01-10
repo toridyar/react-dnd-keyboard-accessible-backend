@@ -3,7 +3,9 @@ import { render } from "react-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, MouseTransition } from "react-dnd-multi-backend";
 
-// import KeyboardBackend, { isKeyboardDragTrigger } from "../src";
+import KeyboardBackend, {
+  isKeyboardDragTrigger,
+} from "react-dnd-keyboard-accessible-backend";
 
 import SortableContainer from "./Sortable/SortableContainer";
 

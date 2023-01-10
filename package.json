@@ -6,6 +6,8 @@
   "license": "MIT",
   "repository": "toridyar/react-dnd-keyboard-accessible-backend",
   "homepage": "https://github.com/toridyar/react-dnd-keyboard-accessible-backend",
+  "main": "src/index.js",
+  "module": "src/index.js",
   "keywords": [
     "a11y",
     "keyboard",
@@ -21,27 +23,10 @@
     "typescript"
   ],
   "scripts": {
-    "start": "react-scripts start",
-    "examples": "react-app-rewired start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "examples": "cd examples && npm i && npm run start"
   },
   "peerDependencies": {
     "react": "16.14.0",
     "react-dnd": "16.0.1"
-  },
-  "devDependencies": {
-    "react": "16.14.0",
-    "react-app-rewired": "^2.2.1",
-    "react-dnd": "16.0.1",
-    "react-dnd-html5-backend": "16.0.1",
-    "react-dnd-multi-backend": "8.0.0",
-    "react-dom": "16.14.0",
-    "react-scripts": "4.0.3"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ]
+  }
 }

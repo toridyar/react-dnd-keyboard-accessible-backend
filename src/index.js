@@ -1,10 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import KeyboardBackendFactory, { KeyboardBackend } from "./KeyboardBackend";
+import isKeyboardDragTrigger from "./util/isKeyboardDragTrigger";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export { KeyboardBackend, isKeyboardDragTrigger };
+
+export default KeyboardBackendFactory;

@@ -7,7 +7,8 @@ export default function isKeyboardDragTrigger(event, withUntrusted = false) {
   // custom-constructed events. Eventually, rdmb should fire an appropriate event instead.
   if (withUntrusted && event.isTrusted === false) return true;
   return (
-    event.key?.toLowerCase() === "d" &&
+    key in event &&
+    event.key.toLowerCase() === "d" &&
     (event.metaKey || event.ctrlKey) &&
     !event.altKey
   );
