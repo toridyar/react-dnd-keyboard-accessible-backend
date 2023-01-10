@@ -1,7 +1,11 @@
 import * as React from "react";
 import { render } from "react-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider, MouseTransition } from "react-dnd-multi-backend";
+import {
+  DndProvider,
+  MouseTransition,
+  createTransition,
+} from "react-dnd-multi-backend";
 
 import KeyboardBackend, {
   isKeyboardDragTrigger,
@@ -9,14 +13,14 @@ import KeyboardBackend, {
 
 import SortableContainer from "./Sortable/SortableContainer";
 
-// const KeyboardTransition = createTransition("keydown", (event) => {
-//   if (!isKeyboardDragTrigger(event)) return false;
-//   // This prevention keeps the first keyboard event from causing browser
-//   // bookmark shortcuts. This can't be done in the Backend because it only
-//   // receives a _cloned_ event _after_ this one has already propagated.
-//   event.preventDefault();
-//   return true;
-// });
+const KeyboardTransition = createTransition("keydown", (event) => {
+  if (!isKeyboardDragTrigger(event)) return false;
+  // This prevention keeps the first keyboard event from causing browser
+  // bookmark shortcuts. This can't be done in the Backend because it only
+  // receives a _cloned_ event _after_ this one has already propagated.
+  event.preventDefault();
+  return true;
+});
 
 // const MouseTransition = createTransition("mousedown", (event) => {
 //   if (event.type.indexOf("touch") !== -1 || event.type.indexOf("mouse") === -1)
@@ -31,16 +35,16 @@ const DND_OPTIONS = {
       backend: HTML5Backend,
       transition: MouseTransition,
     },
-    // {
-    //   id: "keyboard",
-    //   backend: KeyboardBackend,
-    //   context: { window, document },
-    //   options: {
-    //     announcerClassName: "announcer",
-    //   },
-    //   preview: true,
-    //   transition: KeyboardTransition,
-    // },
+    {
+      id: "keyboard",
+      backend: KeyboardBackend,
+      context: { window, document },
+      options: {
+        announcerClassName: "announcer",
+      },
+      preview: true,
+      transition: KeyboardTransition,
+    },
   ],
 };
 

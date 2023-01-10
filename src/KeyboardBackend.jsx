@@ -175,6 +175,8 @@ export class KeyboardBackend {
 }
 
 const createKeyboardBackendFactory = (DragDropManager, context, options) =>
-  new KeyboardBackend(manager, context, options);
+  new KeyboardBackend(DragDropManager, context, options);
+// TODO: fix me
+// new KeyboardBackend(manager, context, options);
 
 export default createKeyboardBackendFactory;
