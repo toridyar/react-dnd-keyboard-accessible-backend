@@ -10,12 +10,15 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "dnd-multi-backend": "^8.0.0",
+    "rdndmb-html5-to-touch": "^8.0.0",
     "react": "16.14.0",
     "react-dnd": "16.0.1",
-    "react-dom": "16.14.0",
     "react-dnd-html5-backend": "16.0.1",
+    "react-dnd-keyboard-accessible-backend": "file:../",
     "react-dnd-multi-backend": "8.0.0",
-    "react-dnd-keyboard-accessible-backend": "file:../"
+    "react-dnd-touch-backend": "^16.0.1",
+    "react-dom": "16.14.0"
   },
   "devDependencies": {
     "react-scripts": "4.0.3"

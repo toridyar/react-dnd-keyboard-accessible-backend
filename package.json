@@ -1,7 +1,7 @@
 {
   "name": "react-dnd-keyboard-accessible-backend",
   "version": "1.0.0",
-  "author": "toridyar",
+  "author": "toridyar (http://github.com/toridyar)",
   "description": "An additional backend to make react-dnd accessible by supporting keyboard inputs.",
   "license": "MIT",
   "repository": "toridyar/react-dnd-keyboard-accessible-backend",

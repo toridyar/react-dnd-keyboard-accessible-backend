@@ -1,10 +1,13 @@
 import * as React from "react";
 import { render } from "react-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
+import { TouchTransition, PointerTransition } from "dnd-multi-backend";
+// import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import {
   DndProvider,
-  MouseTransition,
   createTransition,
+  MouseTransition,
 } from "react-dnd-multi-backend";
 
 import KeyboardBackend, {
@@ -14,19 +17,39 @@ import KeyboardBackend, {
 import SortableContainer from "./Sortable/SortableContainer";
 
 const KeyboardTransition = createTransition("keydown", (event) => {
-  if (!isKeyboardDragTrigger(event)) return false;
-  // This prevention keeps the first keyboard event from causing browser
-  // bookmark shortcuts. This can't be done in the Backend because it only
-  // receives a _cloned_ event _after_ this one has already propagated.
-  event.preventDefault();
-  return true;
+  return isKeyboardDragTrigger(event);
 });
 
 // const MouseTransition = createTransition("mousedown", (event) => {
-//   if (event.type.indexOf("touch") !== -1 || event.type.indexOf("mouse") === -1)
-//     return false;
-//   return true;
+//   return event instanceof MouseEvent;
 // });
+
+const HTML5toTouch = {
+  backends: [
+    {
+      id: "html5",
+      backend: HTML5Backend,
+      transition: PointerTransition,
+    },
+    {
+      id: "touch",
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+    {
+      id: "keyboard",
+      backend: KeyboardBackend,
+      context: { window, document },
+      // options: {
+      //   announcerClassName: "announcer",
+      // },
+      preview: true,
+      transition: KeyboardTransition,
+    },
+  ],
+};
 
 const DND_OPTIONS = {
   backends: [
@@ -35,22 +58,22 @@ const DND_OPTIONS = {
       backend: HTML5Backend,
       transition: MouseTransition,
     },
-    {
-      id: "keyboard",
-      backend: KeyboardBackend,
-      context: { window, document },
-      options: {
-        announcerClassName: "announcer",
-      },
-      preview: true,
-      transition: KeyboardTransition,
-    },
+    // {
+    //   id: "keyboard",
+    //   backend: KeyboardBackend,
+    //   context: { window, document },
+    //   options: {
+    //     announcerClassName: "announcer",
+    //   },
+    //   preview: true,
+    //   transition: KeyboardTransition,
+    // },
   ],
 };
 
 function Index() {
   return (
-    <DndProvider options={DND_OPTIONS}>
+    <DndProvider options={HTML5toTouch}>
       <h1>Keyboard Drag and Drop Example</h1>
 
       <p>
