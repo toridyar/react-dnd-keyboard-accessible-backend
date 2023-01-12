@@ -1,10 +1,6 @@
-// import type DragAnnouncer from "./DragAnnouncer";
-// import type DragPreviewer from "./DragPreviewer";
-import { createFocusManager, FocusManager } from "./util/FocusManager";
+import { createFocusManager } from "./util/FocusManager";
 import getNodeClientOffset from "./util/getNodeClientOffset";
 import stopEvent from "./util/stopEvent";
-
-// import type { DragDropActions, DragDropManager, DragDropMonitor } from "dnd-core";
 
 const NavigationKeys = {
   UP: "ArrowUp",
@@ -14,26 +10,30 @@ const NavigationKeys = {
 };
 
 export class DropTargetNavigator {
-  //   private currentHoveredNode: HTMLElement | null;
-  //   private focusManager: FocusManager;
-  //   private actions: DragDropActions;
-  //   private monitor: DragDropMonitor;
   constructor(sourceNode, targetNodes, manager, previewer, announcer) {
+    this.manager = manager;
+    this.targetNodes = targetNodes;
+    this.previewer = previewer;
+    this.announcer = announcer;
     this.currentHoveredNode = sourceNode;
     this.focusManager = createFocusManager({
       getFocusableElements: () => this.getViableTargets(targetNodes),
     });
     this.actions = manager.getActions();
     this.monitor = manager.getMonitor();
+    this.handleDraggedElementKeyDown =
+      this.handleDraggedElementKeyDown.bind(this);
     window.addEventListener("keydown", this.handleDraggedElementKeyDown, {
       capture: true,
     });
   }
+
   disconnect() {
     window.removeEventListener("keydown", this.handleDraggedElementKeyDown, {
       capture: true,
     });
   }
+
   handleDraggedElementKeyDown = (event) => {
     switch (event.key) {
       case NavigationKeys.UP:
@@ -46,6 +46,7 @@ export class DropTargetNavigator {
         return;
     }
   };
+
   hoverNode(node) {
     const targetId = Array.from(this.targetNodes.entries()).find(
       ([_key, value]) => node === value
@@ -57,18 +58,21 @@ export class DropTargetNavigator {
     this.announcer.announceHover(node, targetId);
     node?.focus();
   }
+
   getNextDropTarget() {
     return this.focusManager.getNextFocusableElement({
       wrap: false,
       from: this.currentHoveredNode ?? undefined,
     });
   }
+
   getPreviousDropTarget() {
     return this.focusManager.getPreviousFocusableElement({
       wrap: false,
       from: this.currentHoveredNode ?? undefined,
     });
   }
+
   getViableTargets(nodes) {
     const allowedTargets = this.getAllowedTargets(nodes);
     return allowedTargets.sort((a, b) => {
@@ -89,6 +93,7 @@ export class DropTargetNavigator {
       else return 0;
     });
   }
+
   getAllowedTargets(nodes) {
     const sourceType = this.monitor.getItemType();
     if (sourceType == null) return Array.from(nodes.values());

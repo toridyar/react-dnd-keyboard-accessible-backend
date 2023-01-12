@@ -1,5 +1,3 @@
-import { XYCoord } from "dnd-core";
-
 export default function getNodeClientOffset(node) {
   if (node == null) return { x: 0, y: 0 };
 

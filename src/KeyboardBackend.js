@@ -1,23 +1,12 @@
-// import DragAnnouncer from "./DragAnnouncer";
-// import DragPreviewer from "./DragPreviewer";
+import DragAnnouncer from "./DragAnnouncer";
+import DragPreviewer from "./DragPreviewer";
 import { DropTargetNavigator } from "./DropTargetNavigator";
 import getNodeClientOffset from "./util/getNodeClientOffset";
 import isKeyboardDragTrigger from "./util/isKeyboardDragTrigger";
 import stopEvent from "./util/stopEvent";
 
-import {
-  Backend,
-  BackendFactory,
-  DragDropActions,
-  DragDropMonitor,
-  Identifier,
-  DragDropManager,
-  Unsubscribe,
-} from "dnd-core";
-// import type { AnnouncementMessages } from "./util/AnnouncementMessages";
-
 const Trigger = {
-  DROP: [" ", "Enter"],
+  DROP: ["Enter"],
   CANCEL_DRAG: ["Escape"],
 };
 
@@ -26,25 +15,8 @@ function isTrigger(event, trigger) {
 }
 
 export class KeyboardBackend {
-  // implements Backend
-  // private static isSetUp: boolean;
-  // // React-DnD Dependencies
-  // private manager: DragDropManager;
-  // private actions: DragDropActions;
-  // private monitor: DragDropMonitor;
-  // private context: KeyboardBackendContext;
-  // private options?: KeyboardBackendOptions;
-  // // Internal State
-  // private sourceNodes: Map<Identifier, HTMLElement>;
-  // private sourcePreviewNodes: Map<string, HTMLElement>;
-  // private sourcePreviewNodeOptions: Map<string, any>;
-  // private targetNodes: Map<string, HTMLElement>;
-  // private _navigator: DropTargetNavigator | undefined;
-  // public _previewer: DragPreviewer;
-  // private _announcer: DragAnnouncer;
-  // private _isDragTrigger: (event: KeyboardEvent, isFirstEvent: boolean) => boolean;
   _handlingFirstEvent = false;
-  constructor(manager, context, options) {
+  constructor(manager, context, options = {}) {
     this.manager = manager;
     this.actions = manager.getActions();
     this.monitor = manager.getMonitor();
@@ -58,9 +30,12 @@ export class KeyboardBackend {
     this.sourcePreviewNodes = new Map();
     this.sourcePreviewNodeOptions = new Map();
     this.targetNodes = new Map();
-    // this._previewer = new DragPreviewer(context.document, options);
-    // this._announcer = new DragAnnouncer(context.document, options);
+    this.handleGlobalKeyDown = this.handleGlobalKeyDown.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
+    this._previewer = new DragPreviewer(context.document, options);
+    this._announcer = new DragAnnouncer(context.document, options);
   }
+
   setup() {
     if (KeyboardBackend.isSetUp) {
       throw new Error("Cannot have two Keyboard backends at the same time.");
@@ -74,9 +49,10 @@ export class KeyboardBackend {
         { capture: true }
       );
     }
-    // this._previewer.attach();
-    // this._announcer.attach();
+    this._previewer.attach();
+    this._announcer.attach();
   }
+
   teardown() {
     KeyboardBackend.isSetUp = false;
     if ("window" in this.context) {
@@ -88,23 +64,26 @@ export class KeyboardBackend {
         }
       );
       this.endDrag();
-      // this._previewer.detach();
-      // this._announcer.detach();
+      this._previewer.detach();
+      this._announcer.detach();
     }
   }
+
   handleGlobalKeyDown(event) {
     if (this.monitor.isDragging() && isTrigger(event, Trigger.CANCEL_DRAG)) {
       this.endDrag(event);
       const sourceId = String(this.monitor.getSourceId());
       const sourceNode = this.sourceNodes.get(sourceId);
-      // this._announcer.announceCancel(sourceNode ?? null, sourceId);
+      this._announcer.announceCancel(sourceNode ?? null, sourceId);
     }
   }
+
   setDndMode(enabled) {
     if ("options" in this && "onDndModeChanged" in this.options) {
       this.options.onDndModeChanged(enabled);
     }
   }
+
   profile() {
     return {
       sourcePreviewNodes: this.sourcePreviewNodes.size,
@@ -112,6 +91,7 @@ export class KeyboardBackend {
       sourceNodes: this.sourceNodes.size,
     };
   }
+
   connectDragSource(sourceId, node) {
     const handleDragStart = this.handleDragStart.bind(this, sourceId);
     this.sourceNodes.set(sourceId, node);
@@ -121,6 +101,7 @@ export class KeyboardBackend {
       node.removeEventListener("keydown", handleDragStart);
     };
   }
+
   connectDragPreview(sourceId, node, options) {
     this.sourcePreviewNodeOptions.set(sourceId, options);
     this.sourcePreviewNodes.set(sourceId, node);
@@ -129,6 +110,7 @@ export class KeyboardBackend {
       this.sourcePreviewNodeOptions.delete(sourceId);
     };
   }
+
   connectDropTarget(targetId, node) {
     this.targetNodes.set(targetId, node);
     node.addEventListener("keydown", this.handleDrop);
@@ -139,9 +121,11 @@ export class KeyboardBackend {
       node.removeEventListener("keydown", this.handleDrop);
     };
   }
+
   getSourceClientOffset = (sourceId) => {
     return getNodeClientOffset(this.sourceNodes.get(sourceId));
   };
+
   handleDragStart = (sourceId, event) => {
     if (!this._isDragTrigger(event, this._handlingFirstEvent)) return;
     this._handlingFirstEvent = false;
@@ -156,45 +140,45 @@ export class KeyboardBackend {
     this._navigator = new DropTargetNavigator(
       sourceNode,
       this.targetNodes,
-      this.manager
-      // this._previewer,
-      // this._announcer,
+      this.manager,
+      this._previewer,
+      this._announcer
     );
-    // this._previewer.createDragPreview(
-    //   this.sourcePreviewNodes.get(sourceId) ?? sourceNode
-    // );
+    this._previewer.createDragPreview(
+      this.sourcePreviewNodes.get(sourceId) ?? sourceNode
+    );
     this.actions.beginDrag([sourceId], {
       clientOffset: this.getSourceClientOffset(sourceId),
       getSourceClientOffset: this.getSourceClientOffset,
       publishSource: false,
     });
-    // this._previewer.render(this.monitor);
+    this._previewer.render(this.monitor);
     this.setDndMode(true);
-    // this._announcer.announceDrag(sourceNode, sourceId);
+    this._announcer.announceDrag(sourceNode, sourceId);
   };
+
   handleDrop = (event) => {
     if (!isTrigger(event, Trigger.DROP)) return;
     const sourceId = String(this.monitor.getSourceId());
     const sourceNode = this.sourceNodes.get(sourceId);
-    // this._announcer.announceDrop(sourceNode ?? null, sourceId);
+    this._announcer.announceDrop(sourceNode ?? null, sourceId);
     this.actions.drop();
     this.endDrag(event);
   };
+
   endDrag(event) {
     event != null && stopEvent(event);
     if ("_navigator" in this) {
-      this._navigator?.disconnect();
+      this._navigator.disconnect();
     }
 
-    // this._previewer.clear();
+    this._previewer.clear();
     if (this.monitor.isDragging()) this.actions.endDrag();
     this.setDndMode(false);
   }
 }
 
 const createKeyboardBackendFactory = (DragDropManager, context, options) =>
-  // NOTE: is this wrong?
-  // new KeyboardBackend(manager, context, options);
   new KeyboardBackend(DragDropManager, context, options);
 
 export default createKeyboardBackendFactory;
