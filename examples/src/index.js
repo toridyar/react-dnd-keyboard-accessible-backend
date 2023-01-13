@@ -2,8 +2,12 @@ import * as React from "react";
 import { render } from "react-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
-import { TouchTransition, PointerTransition } from "dnd-multi-backend";
-import { DndProvider, createTransition } from "react-dnd-multi-backend";
+import { TouchTransition } from "dnd-multi-backend";
+import {
+  DndProvider,
+  createTransition,
+  MouseTransition,
+} from "react-dnd-multi-backend";
 
 import KeyboardBackend, {
   isKeyboardDragTrigger,
@@ -20,7 +24,7 @@ const DND_OPTIONS = {
     {
       id: "html5",
       backend: HTML5Backend,
-      transition: PointerTransition,
+      transition: MouseTransition,
     },
     {
       id: "touch",
