@@ -15,8 +15,8 @@ function isTrigger(event, trigger) {
 }
 
 export class KeyboardBackend {
-  _handlingFirstEvent = false;
   constructor(manager, context, options = {}) {
+    this._handlingFirstEvent = false;
     this.manager = manager;
     this.actions = manager.getActions();
     this.monitor = manager.getMonitor();
