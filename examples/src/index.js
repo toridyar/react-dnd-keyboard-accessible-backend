@@ -3,12 +3,7 @@ import { render } from "react-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { TouchTransition, PointerTransition } from "dnd-multi-backend";
-// import { HTML5toTouch } from "rdndmb-html5-to-touch";
-import {
-  DndProvider,
-  createTransition,
-  MouseTransition,
-} from "react-dnd-multi-backend";
+import { DndProvider, createTransition } from "react-dnd-multi-backend";
 
 import KeyboardBackend, {
   isKeyboardDragTrigger,
@@ -20,11 +15,7 @@ const KeyboardTransition = createTransition("keydown", (event) => {
   return isKeyboardDragTrigger(event);
 });
 
-// const MouseTransition = createTransition("mousedown", (event) => {
-//   return event instanceof MouseEvent;
-// });
-
-const HTML5toTouch = {
+const DND_OPTIONS = {
   backends: [
     {
       id: "html5",
@@ -35,45 +26,24 @@ const HTML5toTouch = {
       id: "touch",
       backend: TouchBackend,
       options: { enableMouseEvents: true },
-      preview: true,
       transition: TouchTransition,
     },
     {
       id: "keyboard",
       backend: KeyboardBackend,
       context: { window, document },
-      // options: {
-      //   announcerClassName: "announcer",
-      // },
-      preview: true,
+      options: {
+        announcerClassName: "announcer",
+        // previewerClassName: "card",
+      },
       transition: KeyboardTransition,
     },
   ],
 };
 
-const DND_OPTIONS = {
-  backends: [
-    {
-      id: "html5",
-      backend: HTML5Backend,
-      transition: MouseTransition,
-    },
-    // {
-    //   id: "keyboard",
-    //   backend: KeyboardBackend,
-    //   context: { window, document },
-    //   options: {
-    //     announcerClassName: "announcer",
-    //   },
-    //   preview: true,
-    //   transition: KeyboardTransition,
-    // },
-  ],
-};
-
 function Index() {
   return (
-    <DndProvider options={HTML5toTouch}>
+    <DndProvider options={DND_OPTIONS}>
       <h1>Keyboard Drag and Drop Example</h1>
 
       <p>
@@ -83,8 +53,7 @@ function Index() {
 
       <p>
         To pick up an item with the keyboard, use{" "}
-        <span style={{ fontFamily: "monospace" }}>ctrl+d</span> (or{" "}
-        <span style={{ fontFamily: "monospace" }}>command+d</span> on macOS)
+        <span style={{ fontFamily: "monospace" }}>Spacebar</span>
         while focused on it, then press the up and down arrows to move between
         targets, and the enter key to drop the item where it is currently
         hovered. You can also cancel dragging at any time by pressing{" "}

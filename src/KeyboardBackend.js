@@ -23,7 +23,7 @@ export class KeyboardBackend {
     this.context = context;
     this.options = options;
     this._isDragTrigger =
-      options && "isDragTrigger" in options
+      "isDragTrigger" in options
         ? options.isDragTrigger
         : isKeyboardDragTrigger;
     this.sourceNodes = new Map();

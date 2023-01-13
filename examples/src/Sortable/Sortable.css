@@ -1,0 +1,13 @@
+.card {
+  position: relative;
+  border: 1px dashed gray;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  cursor: grab;
+}
+
+.announcer {
+  position: absolute;
+  bottom: 5px;
+}

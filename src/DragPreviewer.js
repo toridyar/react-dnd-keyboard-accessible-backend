@@ -1,9 +1,9 @@
 export default class DragPreview {
   constructor(document, { previewerClassName } = {}) {
+    this.document = document;
     this.container = this.document?.createElement("div");
     this.svg = this.document?.createElement("svg");
     this.foreignObject = this.document?.createElement("foreignObject");
-
     if (
       this.container != null &&
       this.svg != null &&

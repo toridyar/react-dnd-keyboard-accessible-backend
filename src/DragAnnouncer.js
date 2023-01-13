@@ -2,6 +2,7 @@ import { getDefaultAnnouncementMessages } from "./util/AnnouncementMessages";
 
 export default class DragAnnouncer {
   constructor(document, { getAnnouncementMessages, announcerClassName } = {}) {
+    this.document = document;
     this.getMessages =
       getAnnouncementMessages ?? getDefaultAnnouncementMessages;
     this.target = this.document?.createElement("span");

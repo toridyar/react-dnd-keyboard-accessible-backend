@@ -3,14 +3,7 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 
-const style = {
-  position: "relative",
-  border: "1px dashed gray",
-  padding: "0.5rem 1rem",
-  marginBottom: ".5rem",
-  backgroundColor: "white",
-  cursor: "grab",
-};
+import "./Sortable.css";
 
 const dropTargetAboveStyle = {
   position: "absolute",
@@ -60,7 +53,7 @@ export function SortableCard({ id, text, index, moveCard }) {
   drag(drop(ref));
 
   return (
-    <div ref={ref} style={{ ...style, opacity }} tabIndex={0}>
+    <div ref={ref} className="card" style={{ opacity }} tabIndex={0}>
       {isOver && isAbove ? <div style={dropTargetAboveStyle} /> : null}
       {text}
       {isOver && isBelow ? <div style={dropTargetBelowStyle} /> : null}
