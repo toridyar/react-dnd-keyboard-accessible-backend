@@ -156,6 +156,9 @@ export class KeyboardBackend {
     this._announcer.announceDrop(sourceNode ?? null, sourceId);
     this.actions.drop();
     this.endDrag(event);
+
+    // Set focus on the node that was moved
+    sourceNode.focus();
   };
 
   endDrag(event) {
