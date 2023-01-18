@@ -30,6 +30,7 @@ const DND_OPTIONS = {
       id: "touch",
       backend: TouchBackend,
       options: { enableMouseEvents: true },
+      preview: true,
       transition: TouchTransition,
     },
     {
@@ -39,6 +40,7 @@ const DND_OPTIONS = {
       options: {
         announcerClassName: "announcer",
       },
+      preview: true,
       transition: KeyboardTransition,
     },
   ],
