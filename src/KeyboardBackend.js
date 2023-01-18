@@ -1,5 +1,4 @@
 import DragAnnouncer from "./DragAnnouncer";
-import DragPreviewer from "./DragPreviewer";
 import { DropTargetNavigator } from "./DropTargetNavigator";
 import getNodeClientOffset from "./util/getNodeClientOffset";
 import isKeyboardDragTrigger from "./util/isKeyboardDragTrigger";
@@ -32,7 +31,6 @@ export class KeyboardBackend {
     this.targetNodes = new Map();
     this.handleGlobalKeyDown = this.handleGlobalKeyDown.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
-    this._previewer = new DragPreviewer(context.document, options);
     this._announcer = new DragAnnouncer(context.document, options);
   }
 
@@ -49,7 +47,6 @@ export class KeyboardBackend {
         { capture: true }
       );
     }
-    this._previewer.attach();
     this._announcer.attach();
   }
 
@@ -64,7 +61,6 @@ export class KeyboardBackend {
         }
       );
       this.endDrag();
-      this._previewer.detach();
       this._announcer.detach();
     }
   }
@@ -141,18 +137,14 @@ export class KeyboardBackend {
       sourceNode,
       this.targetNodes,
       this.manager,
-      this._previewer,
       this._announcer
-    );
-    this._previewer.createDragPreview(
-      this.sourcePreviewNodes.get(sourceId) ?? sourceNode
     );
     this.actions.beginDrag([sourceId], {
       clientOffset: this.getSourceClientOffset(sourceId),
       getSourceClientOffset: this.getSourceClientOffset,
       publishSource: false,
     });
-    this._previewer.render(this.monitor);
+
     this.setDndMode(true);
     this._announcer.announceDrag(sourceNode, sourceId);
   };
@@ -172,7 +164,6 @@ export class KeyboardBackend {
       this._navigator.disconnect();
     }
 
-    this._previewer.clear();
     if (this.monitor.isDragging()) this.actions.endDrag();
     this.setDndMode(false);
   }

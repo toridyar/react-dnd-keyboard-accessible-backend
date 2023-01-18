@@ -5,7 +5,7 @@ export default class DragAnnouncer {
     this.document = document;
     this.getMessages =
       getAnnouncementMessages ?? getDefaultAnnouncementMessages;
-    this.target = this.document?.createElement("span");
+    this.target = this.document.createElement("span");
     if (this.target != null) {
       this.target.setAttribute("aria-live", "assertive");
       this.target.setAttribute("aria-atomic", "true");

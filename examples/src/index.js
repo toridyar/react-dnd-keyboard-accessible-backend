@@ -38,7 +38,6 @@ const DND_OPTIONS = {
       context: { window, document },
       options: {
         announcerClassName: "announcer",
-        // previewerClassName: "card",
       },
       transition: KeyboardTransition,
     },

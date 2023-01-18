@@ -10,10 +10,9 @@ const NavigationKeys = {
 };
 
 export class DropTargetNavigator {
-  constructor(sourceNode, targetNodes, manager, previewer, announcer) {
+  constructor(sourceNode, targetNodes, manager, announcer) {
     this.manager = manager;
     this.targetNodes = targetNodes;
-    this.previewer = previewer;
     this.announcer = announcer;
     this.currentHoveredNode = sourceNode;
     this.focusManager = createFocusManager({
@@ -54,7 +53,6 @@ export class DropTargetNavigator {
     if (targetId == null) return;
     this.actions.hover([targetId], { clientOffset: getNodeClientOffset(node) });
     this.currentHoveredNode = node;
-    this.previewer.render(this.monitor);
     this.announcer.announceHover(node, targetId);
     node?.focus();
   }

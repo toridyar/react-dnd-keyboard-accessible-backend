@@ -15,7 +15,7 @@ npm install react-dnd-keyboard-accessible-backend
 
 Same as `react-dnd-accessible-backend`, `react-dnd-keyboard-accessible-backend` is also not a _replacement_ backend for `react-dnd`, but rather an
 _additional_ one. This means you will most likely need to compose backends together to get all of
-the functionality you would like (mouse dragging, keyboards, pointer dragging on mobile, etc).
+the functionality you would like (mouse dragging, keyboards, pointer dragging on mobile, preview, etc).
 
 One of the easiest ways to do this is with
 [`react-dnd-multi-backend`](https://www.npmjs.com/package/react-dnd-multi-backend) and it's
@@ -155,22 +155,3 @@ page for testing.
   },
 }
 ```
-
-### `previewerClassName`
-
-Similar to the `announcerClassName` this option provides a custom class name to use for the drag
-previewer, which is a container that gets populated by a clone of the currently-dragged element and
-positions itself in the appropriate place on screen for the currently-hovered drop target.
-
-```typescript
-{
-  options: {
-    previewerClassName: styles.dndDragPreview,
-  },
-}
-```
-
-**NOTE:** It is important that this div does _not_ have any styles that affect its spatial
-positioning on screen, as this is controlled internally by the backend. What it _can_ be used for
-are things like adding a drop shadow or highlight to the drag preview, changing opacities, borders,
-scaling, and other stylistic options.
