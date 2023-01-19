@@ -71,6 +71,8 @@ export function SortableCard({ id, text, index, moveCard }) {
 
   return (
     <>
+      {/* Be sure the tabIndex or function that makes this element
+    selectable is on the same element as the ref */}
       <div ref={ref} className="card" style={{ opacity }} tabIndex={0}>
         {isOver && isAbove ? <div style={dropTargetAboveStyle} /> : null}
         {text}
