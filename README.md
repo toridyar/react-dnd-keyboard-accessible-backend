@@ -1,7 +1,7 @@
 # react-dnd-keyboard-accessible-backend
 
 An additional backend to make [`react-dnd`](https://react-dnd.github.io/react-dnd/about) accessible by supporting keyboard inputs. This is starting with
-['react-dnd-accessible-backend'](https://github.com/discord/react-dnd-accessible-backend) and has been updated to use latest version of react-dnd (16.0.x).
+['react-dnd-accessible-backend'](https://github.com/discord/react-dnd-accessible-backend) and has been updated to use latest version of react-dnd (16.0.x). This also removes the built-in preview so you can use a custom preview - see example using `react-dnd-multi-backend`.
 
 ## Installation
 
