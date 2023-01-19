@@ -26,8 +26,6 @@ export class KeyboardBackend {
         ? options.isDragTrigger
         : isKeyboardDragTrigger;
     this.sourceNodes = new Map();
-    this.sourcePreviewNodes = new Map();
-    this.sourcePreviewNodeOptions = new Map();
     this.targetNodes = new Map();
     this.handleGlobalKeyDown = this.handleGlobalKeyDown.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
@@ -89,9 +87,12 @@ export class KeyboardBackend {
   }
 
   connectDragSource(sourceId, node) {
+
     const handleDragStart = this.handleDragStart.bind(this, sourceId);
     this.sourceNodes.set(sourceId, node);
+
     node.addEventListener("keydown", handleDragStart);
+
     return () => {
       this.sourceNodes.delete(sourceId);
       node.removeEventListener("keydown", handleDragStart);
@@ -101,6 +102,7 @@ export class KeyboardBackend {
   connectDragPreview(sourceId, node, options) {
     this.sourcePreviewNodeOptions.set(sourceId, options);
     this.sourcePreviewNodes.set(sourceId, node);
+
     return () => {
       this.sourcePreviewNodes.delete(sourceId);
       this.sourcePreviewNodeOptions.delete(sourceId);
